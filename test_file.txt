@@ -1,0 +1,18 @@
+CREATE TABLE Countries
+(
+  Name varchar(30)
+    CONSTRAINT PK_Countries PRIMARY KEY,
+  FullName nvarchar(100) NOT NULL,
+  [Population] int NOT NULL,
+  Area int NOT NULL
+)
+
+INSERT INTO Countries VALUES('Congo', N'Republic of the Congo', 4366266, 342000);
+INSERT INTO Countries VALUES('Poland', N'Republic of Poland', 38544513, 312679);
+INSERT INTO Countries VALUES('USA', N'United States of America', 316962000, 9826675);
+INSERT INTO Countries VALUES('United Kingdom', N'United Kingdom of Great Britain and Northern Ireland', 63181775, 243610);
+INSERT INTO Countries VALUES('Germany', N'Federal Republic of Germany', 80523700, 357021);
+INSERT INTO Countries VALUES('Spain', N'Kingdom of Spain', 46704314, 505992);
+
+--Pobierz 1 losowy rekord
+SELECT TOP 1 * FROM Countries ORDER BY NEWID();

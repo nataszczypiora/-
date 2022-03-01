@@ -2,10 +2,28 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    AMPERSAND
+    BACKSLASH
+    DASH
+    DOLLAR
+    DOUBLE_DOTS
+    FENCE
+    GERUND
+    HASH
+    HAT
+    LINUX_HOME
+    L_BRACE
+    L_SQUARE_PARENTIS
     MINUS
     NOT
     NULL
     PLUS
+    QUESTION_MARK
+    R_BRACE
+    R_SQUARE_PARENTIS
+    SCREAM
+    SINGLE_CHAR
+    SLASH
     UNDERSCORE
 
 Grammar
@@ -75,19 +93,28 @@ Rule 60    TOP_C -> TOP NUMBER ARGS
 Terminals, with rules where they appear
 
 ALL                  : 5
+AMPERSAND            : 
 ANY                  : 33
 ASC                  : 40
+BACKSLASH            : 
 BETWEEN              : 55
 BY                   : 36 38 39 40 41
 COMMA                : 44
+DASH                 : 
 DESC                 : 39
 DISTINCT             : 46
+DOLLAR               : 
+DOUBLE_DOTS          : 
 EMPTY_STRING         : 35
 END                  : 1 2
 EQUAL                : 29 51
+FENCE                : 
 FROM                 : 6 7
 FULL                 : 25
+GERUND               : 
 GROUP                : 36
+HASH                 : 
+HAT                  : 
 HAVING               : 31
 IN                   : 57
 INNER                : 22
@@ -97,7 +124,10 @@ LESS                 : 49
 LESS_EQ              : 54
 LIKE                 : 56
 LIMIT                : 42
+LINUX_HOME           : 
+L_BRACE              : 
 L_PARENTIS           : 37 59
+L_SQUARE_PARENTIS    : 
 MINUS                : 
 MORE                 : 50
 MORE_EQ              : 53
@@ -111,11 +141,17 @@ ON                   : 28 29
 ORDER                : 38 39 40 41
 OUTER                : 26
 PLUS                 : 
+QUESTION_MARK        : 
 QUOTE                : 33 33
 REGEX                : 58
 RIGHT                : 24
+R_BRACE              : 
 R_PARENTIS           : 37 59
+R_SQUARE_PARENTIS    : 
+SCREAM               : 
 SELECT               : 3 4 5 37
+SINGLE_CHAR          : 
+SLASH                : 
 TOP                  : 60
 UNDERSCORE           : 
 VARIABLE             : 28 29 29 32 34 36 38 39 40 44 45 46 48
