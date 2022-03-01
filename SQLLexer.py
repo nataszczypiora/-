@@ -47,12 +47,30 @@ class MySqlLexer(object):
                  'NUMBER',
                  'L_PARENTIS',
                  'R_PARENTIS',
+                 'L_SQUARE_PARENTIS',
+                 'R_SQUARE_PARENTIS',
+                 'L_BRACE',
+                 'R_BRACE',
                  'REGEX',
                  'EMPTY_STRING',
                  'QUOTE',
                  'PLUS',
                  'MINUS',
-                 'UNDERSCORE'
+                 'UNDERSCORE',
+                 'HASH',
+                 'AMPERSAND',
+                 'SLASH',
+                 'BACKSLASH',
+                 'SCREAM',
+                 'QUESTION_MARK',
+                 'DOUBLE_DOTS',
+                 'DOLLAR',
+                 'HAT',
+                 'DASH',
+                 'GERUND',
+                 'FENCE',
+                 'LINUX_HOME',
+                 'SINGLE_CHAR'
              ] + list(reserved.values())
 
     t_ALL = r'\*'
@@ -68,6 +86,10 @@ class MySqlLexer(object):
     t_END = r';'
     t_L_PARENTIS = r'\('
     t_R_PARENTIS = r'\)'
+    t_L_SQUARE_PARENTIS = r'\['
+    t_R_SQUARE_PARENTIS = r'\]'
+    t_L_BRACE = r'\{'
+    t_R_BRACE = r'\}'
     t_EMPTY_STRING = r'\""'
     t_QUOTE = r'\"'
     t_REGEX = r'\~\*'
@@ -75,6 +97,20 @@ class MySqlLexer(object):
     t_MINUS = r'\-'
     t_UNDERSCORE = r'\_'
     t_ANY = r'[a-zA-Z][a-zA-Z0-9]'
+    t_HASH = r'\#'
+    t_AMPERSAND = r'\&'
+    t_SLASH = r'\/'
+    t_BACKSLASH = r'\\'
+    t_SCREAM = r'\!'
+    t_QUESTION_MARK = r'\?'
+    t_DOUBLE_DOTS = r'\:'
+    t_DOLLAR = r'\$'
+    t_HAT = r'\^'
+    t_DASH = r'–'
+    t_GERUND = r'\`'
+    t_FENCE = r'\|'
+    t_LINUX_HOME = r'\~'
+    t_SINGLE_CHAR = r'.'
 
     def __init__(self):
         self.lexer = None
