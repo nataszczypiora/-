@@ -1,0 +1,37 @@
+Antipattern select_all
+| select * from pg_available_extensions; name | default_version | installed_version | - adminpack | 1.0 | | administrative functions for PostgreSQL dblink | 1.0 | | connect to other PostgreSQL databases from within a database file_fdw | 1.0 | | foreign-data wrapper for flat file access fuzzystrmatch | 1.0 | 1.0 | determine similarities and distance between strings lo | 1.0 | | Large Object maintenance pageinspect | 1.0 | | inspect the contents of database pages at a low level pg_buffercache | 1.0 | | examine the shared buffer cache pg_freespacemap | 1.0 | | examine the free space map (FSM) pg_stat_statements | 1.1 | | track execution statistics of all SQL statements executed pg_trgm | 1.0 | 1.0 | text similarity measurement and index searching based on trigrams pgcrypto | 1.0 | | cryptographic functions pgrowlocks | 1.0 | | show row-level locking information pgstattuple | 1.0 | | show tuple-level statistics plpgsql | 1.0 | 1.0 | PL/pgSQL procedural language tablefunc | 1.0 | 1.0 | functions that manipulate whole tables, including crosstab uuid-ossp | 1.0 | | generate universally unique identifiers (UUIDs) (16 rows)
+SELECT `name` FROM `table` WHERE `name` REGEXP '^[abcdef]*$'
+| SELECT * FROM Students WHERE Name LIKE '%AM%'
+| select DISTINCT po. * from purchaseorder po inner join poTask pt on (po.purchaseorderid = pt.purchaseorderid) inner join poTaskline ptl1 on (pt.potaskid = ptl1.potaskid) and ptl1.poTasklinetype = 'M' inner join poTaskline ptl2 on (pt.potaskid = ptl2.potaskid) and ptl2.poTasklinetype = 'D' where po.PoStatus = 6
+| SELECT * FROM myTable WHERE id = 5 OR id = 9 OR id = 2 OR id = 4 OR id = 6 OR id = 3
+SELECT OS, COUNT(*) AS TOTAL FROM (SELECT os.*, (CASE WHEN TYPE LIKE '%Linux%' THEN 'Linux' ELSE 'UNKNOWN' END) AS OS FROM COMPUTERS.OS os ) os GROUP BY OS;
+| select * from sys.procedures
+SELECT YEAR([Expected Arrival Date])as 'Year', MONTH([Expected Arrival Date]) as 'Month', [Vendor Name], (SUM(CASE WHEN ([Days Past Due] = 0) THEN [Qty Received] ELSE 0 END) / SUM([Qty Received])) * 100 AS 'On-Time %', (SUM(CASE WHEN ([Days Past Due] &lt; 0) THEN [Qty Received] ELSE 0 END) / SUM([Qty Received])) * 100 AS 'Early %', (SUM(CASE WHEN ([Days Past Due] &gt; 0) THEN [Qty Received] ELSE 0 END) / SUM([Qty Received])) * 100 AS 'Late %', SUM([Qty Received]) aS 'TOTAL' FROM data_view GROUP BY YEAR([Expected Arrival Date]),MONTH([Expected Arrival Date]),[Vendor Name] ORDER by YEAR([Expected Arrival Date]),MONTH([Expected Arrival Date])
+@comments = Comment.find(:all, :limit =&gt; 10, :joins =&gt; "LEFT JOIN `users` ON comments.user_id = users.id", :select =&gt; 'comments.*, users.theme')
+| SELECT * FROM pg_locks;
+| SELECT t.* FROM table1 t JOIN ( SELECT MAX(id) as id FROM table1 GROUP BY fk ) t1 ON t.id = t1.id
+| SELECT * FROM #PreModuleAllData WITH(NOLOCK) WHERE (@Country = 'DEFAULT' OR @Country = '' OR ([Language] = @Country )) AND (@UserType = 'DEFAULT' OR @UserType = '' OR ([UserType] = @UserType )) AND (@Group = 'DEFAULT' OR @Group = '' OR ([Company] = @Group )) AND (@CodeUsage = 'DEFAULT' OR @CodeUsage = '' OR ([User Code]= @CodeUsage ))
+| select * from global_name;
+SELECT &lt;column list since I never use *&gt; FROM My_Table ORDER BY some_column DESC LIMIT 500, 500
+| SELECT parent.* FROM nested_set node, nested_set parent WHERE ( node.set_left BETWEEN parent.set_left AND parent.set_right ) AND node.set_id={CHILD_NODE_ID_HERE} ORDER BY parent.set_right - parent.set_left #LIMIT 1,1
+| select * from users where user_id is not null;
+| SELECT * , lead(action_time) OVER (PARTITION BY user_id ORDER BY action_time) - action_time AS time_spent FROM tbl;
+| SELECT * , CASE WHEN likes.face_id = persona.face_id THEN '1' ELSE '0' END liked, CASE WHEN dislikes.face_id = persona.face_id THEN '1' ELSE '0' END disliked, CASE WHEN comments.face_id = tagged.face_id THEN '1' ELSE '0' END commented FROM tagged JOIN persona ON persona.face_id = tagged.face_id LEFT JOIN likes ON likes.face_id = persona.face_id AND likes.phone_id = 'FA' LEFT JOIN dislikes ON dislikes.face_id = tagged.face_id AND dislikes.phone_id = 'FA' LEFT JOIN comments ON comments.face_id = tagged.face_id AND comments.phone_id = 'FA' WHERE tagged.phone_id = 'FA'
+| SELECT * FROM ubuser INNER JOIN post ON ubuser.usr_ID = post.pos_USERID INNER JOIN ubFriendsLink ON ubuser.usr_ID IN (ub_lnkID1,ub_lnkID2) WHERE session("ID") IN (ub_lnkID1,ub_lnkID2) ORDER BY pos_DATE DESC
+| SELECT * FROM table WHERE 'value' LIKE CONCAT('%', column, '%')
+| SELECT * FROM people WHERE MATCH (name, email) AGAINST ('$val*' IN BOOLEAN MODE) ORDER BY MATCH(name, email) AGAINST('$val*') DESC
+| SELECT * FROM TABLE WHERE COLUMN BETWEEN '1' AND '9' and LEN(COLUMN) = 1;
+| SELECT p.* FROM products p JOIN ( SELECT product_id FROM product_articles GROUP BY product_id HAVING COUNT(*) = SUM(CASE WHEN article_id IN (1, 2) THEN 1 ELSE 0 END) AND SUM(CASE WHEN article_id IN (1, 2) THEN 1 ELSE 0 END) = 2 ) q ON p.product_id = q.product_id
+| SELECT * FROM names ORDER BY col_containing_nb_of_search limit 6
+SELECT o.name, c.name FROM sys.objects AS o, sys.columns AS c WHERE o.[object_id] *= c.[object_id];
+SELECT a.DC_DATE, b.* FROM DCHDR a INNER JOIN DCDTL b ON a.DC_Nos = b.DC_Nos
+SELECT `c`.*, `cont_prod`.`custom_field_set_id` AS `custom_field_set_id`, `cont_link_cont`.`id` AS `product_text_id`, `cf_321`.`value` AS `concept_number`, `cf_322`.`value` AS `annee`, `cf_323`.`value` AS `saison`, `cf_334`.`value` AS `color_id` FROM `container` AS `c` INNER JOIN `container_product` AS `cont_prod` ON c.id = cont_prod.container_id INNER JOIN `container_link` AS `cont_link` ON cont_prod.container_id = cont_link.container_id INNER JOIN `container` AS `cont_link_cont` ON cont_link_cont.id = cont_link.link_id LEFT JOIN `custom_field_string` AS `cf_321` ON cont_link_cont.id = cf_321.container_id AND cf_321.custom_field_id=321 LEFT JOIN `custom_field_string` AS `cf_322` ON cont_link_cont.id = cf_322.container_id AND cf_322.custom_field_id=322 LEFT JOIN `custom_field_string` AS `cf_323` ON cont_link_cont.id = cf_323.container_id AND cf_323.custom_field_id=323 LEFT JOIN `custom_field_int` AS `cf_334` ON cont_link_cont.id = cf_334.container_id AND cf_334.custom_field_id=334 WHERE `c`.`container_class` IN ('product') AND c.deleted = 0 AND cont_link.reason ='product_main_text' AND cont_link_cont.container_class='product_text' AND cont_link_cont.hidden = 0 GROUP BY CASE WHEN custom_field_set_id=33 THEN cf_321.value,cf_322.value,cf_323.value,cf_334.value END
+SELECT u.number, u.name, u.deliveryaddress, CASE WHEN EXISTS (SELECT * FROM ProductUser WHERE number = u.number AND productid = @ProductId) THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END AS IsInPromo FROM Users u
+| select * from all_tables where table_name like '%TEMP_TRAN%'
+| SELECT * FROM `users` WHERE `gen` IN (0, 1) AND `id` IN ('405','406','407',...)
+
+
+Statystyka ---
+Poprawnie zklasyfikowanych: 21
+Nie poprawnie zklasyfikowanych: 9
+Procent poprawnych: 70%

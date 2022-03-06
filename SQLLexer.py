@@ -6,6 +6,7 @@ class MySqlLexer(object):
     reserved = {
         'SELECT': 'SELECT',
         'FROM': 'FROM',
+        'COUNT': 'COUNT',
         'JOIN': 'JOIN',
         'LEFT': 'LEFT',
         'RIGHT': 'RIGHT',
@@ -58,9 +59,7 @@ class MySqlLexer(object):
                  'MINUS',
                  'UNDERSCORE',
                  'HASH',
-                 'AMPERSAND',
                  'SLASH',
-                 'BACKSLASH',
                  'SCREAM',
                  'QUESTION_MARK',
                  'DOUBLE_DOTS',
@@ -98,9 +97,7 @@ class MySqlLexer(object):
     t_UNDERSCORE = r'\_'
     t_ANY = r'[a-zA-Z][a-zA-Z0-9]'
     t_HASH = r'\#'
-    t_AMPERSAND = r'\&'
     t_SLASH = r'\/'
-    t_BACKSLASH = r'\\'
     t_SCREAM = r'\!'
     t_QUESTION_MARK = r'\?'
     t_DOUBLE_DOTS = r'\:'
@@ -251,8 +248,15 @@ class MySqlLexer(object):
                 | DISTINCT VARIABLE
                 | INNER_SELECT_C
                 | VARIABLE
+                | P_COUNT
         """
         return p
+
+    def p_COUNT(self, p):
+        """
+            P_COUNT : COUNT L_PARENTIS ALL R_PARENTIS
+                | COUNT VARIABLE
+        """
 
     def p_OPERATOR(self, p):
         """

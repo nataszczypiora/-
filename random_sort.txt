@@ -1,0 +1,37 @@
+Antipattern random_sort
+| SELECT TOP 20 [image].Image_id, Source_Link FROM Item INNER JOIN [Image] ON Item.Image_id = [Image].Image_id INNER JOIN Age_Item ON Item.Item_id = Age_Item.Item_id WHERE Gender = 'male' AND Age_Item.Age_id = 4 AND [Image].Image_id NOT IN (SELECT [Image].Image_id FROM [Image] INNER JOIN Item on [Image].Image_id = Item.Image_id INNER JOIN Session_Item on Item.Item_id = Session_Item.Item_id WHERE Session_Item.Session_id = 3) ORDER BY NEWID() -- random rows
+| SELECT TOP 1 ResortID FROM TableName -- WHERE &lt;Condition&gt; ORDER BY NEWID() ASC
+declare @ReadID uniqueidentifier declare @BatchSize int = 20; -- make a parameter to your procedure set @ReadID = NEWID(); UPDATE tbl WITH (ROWLOCK) SET HasBeenRead = @ReadID -- your UNIQUEIDENTIFIER field FROM ( SELECT TOP (@BatchSize) Id FROM tbl WITH(UPDLOCK ROWLOCK READPAST ) WHERE HasBeenRead IS null ORDER BY [Id]) AS t1 WHERE ( tbl.Id = t1.Id) SELECT Id, OtherCol, OtherCol2 FROM tbl WITH(UPDLOCK ROWLOCK READPAST ) WHERE HasBeenRead = @ReadID
+| SELECT TOP 1 LOTTOID, VAL0, VAL1, VAL2, VAL3, VAL4, VAL5 FROM tblLotto ORDER BY NEWID()
+| SELECT * FROM (SELECT TOP (100) Business_Unit, GEMSID, First_Name, Last_Name, Region, District, Job_Function, Email_Address, Job_Group_Code FROM dbo.v_TMS_employee_HR WHERE Job_Group_Code=1 ORDER BY NEWID()) UNION ................... UNION ................... ................... UNION SELECT * FROM ( SELECT TOP (10) Business_Unit, GEMSID, First_Name, Last_Name, Region, District, Job_Function, Email_Address, Job_Group_Code FROM dbo.v_TMS_employee_HR WHERE Job_Group_Code=8 ORDER BY NEWID())
+| SELECT TOP 1 colName FROM tableName ORDER BY NEWID()
+| SELECT TOP 10 * FROM Items WHERE CategoryID = @whatever ORDER BY NEWID()
+| SELECT TOP 3 ImgID, Image FROM (SELECT DISTINCT ImgID, Image FROM #MyTABLE )sub ORDER BY NEWID()
+| SELECT ProdCode, ProdName, ( SELECT TOP 1 ItemCode FROM items WHERE items.Assortment IN (102) AND itemcode &lt;&gt; products.ProdCode ORDER BY NEWID(), products.ProdCode ) FROM Products WHERE ProductGroup IN (102)
+| SELECT TOP 1 * FROM Movie ORDER BY NEWID()
+| SELECT TOP 5 u.UserId, u.UserName, p.ImageFileName FROM users as u, profiles as p WHERE u.UserId = p.UserId ORDER BY NEWID()
+| SELECT TOP 5 * FROM Colors ORDER BY NEWID()
+| WITH A AS ( SELECT TOP 1000000 email, optDate , ID = Row_Number() OVER (ORDER BY email, optDate) , Items = COUNT() OVER (PARTITION BY (Select 1)) FROM myTable ORDER BY NEWID() ) SELECT Email, CASE WHEN ID &lt; Items * 0.1 THEN 'Group1' WHEN ID &lt; Items * 0.55 THEN 'Group2' ELSE 'Group3' END AS [Group] FROM A
+| SELECT TOP (100) ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS ID,--Sequential number from 1 to .. (SELECT TOP 1 color FROM ( VALUES (0, 'Red'), (1, 'Green'), (2, 'Yellow') ) colors(id, color) ORDER BY NEWID() ) AS RandomColor FROM sys.all_columns ac1 CROSS JOIN sys.all_columns ac2
+| SELECT TOP 1 * FROM tbl_name ORDER BY NEWID()
+| SELECT TOP 5 Name FROM (SELECT Name,ABS(CHECKSUM(NEWID())) nid, ROW_NUMBER() OVER (PARTITION BY Name ORDER BY NEWID()) RN FROM Table1) as sub WHERE RN &lt;= 3 GROUP BY Name ORDER BY MAX(nid)
+| SELECT TOP 1 x FROM y ORDER BY NEWID()
+SELECT TOP 500 CONVERT(INT, CONVERT(VARBINARY(16), NEWID())) FROM dbo.MyTable
+| SELECT TOP (1) WebSiteLink FROM YourTable ORDER BY NEWID();
+| SELECT TOP 1 id, Name FROM Persons ORDER BY NEWID()
+| --Create Tables CREATE TABLE [dbo].[BASE]( [ID] [bigint] NOT NULL, [IsActive] BIT PRIMARY KEY CLUSTERED ([ID] ASC) )ON [PRIMARY] GO CREATE TABLE [dbo].[EventPerson]( [DUID] [bigint] NOT NULL, [PersonInvolvedID] [bigint] NULL, PRIMARY KEY CLUSTERED ([DUID] ASC) ) ON [PRIMARY] GO CREATE NONCLUSTERED INDEX [EventPerson_IDX] ON [dbo].[EventPerson] ( [PersonInvolvedID] ASC ) CREATE TABLE [dbo].[EventPerson788]( [EntryID] [bigint] NOT NULL, [LinkedSuspectID] [bigint] NULL, [sourceid] [bigint] NULL, PRIMARY KEY CLUSTERED ([EntryID] ASC) ) ON [PRIMARY] GO ALTER TABLE [dbo].[EventPerson788] WITH CHECK ADD CONSTRAINT [FK7A34153D3720F84A] FOREIGN KEY([sourceid]) REFERENCES [dbo].[EventPerson] ([DUID]) GO ALTER TABLE [dbo].[EventPerson788] CHECK CONSTRAINT [FK7A34153D3720F84A] GO CREATE NONCLUSTERED INDEX [EventPerson788_IDX] ON [dbo].[EventPerson788] ([LinkedSuspectID] ASC) GO --POPOLATE BASE TABLE DECLARE @I BIGINT=1 WHILE (@I&lt;10000000) BEGIN begin transaction INSERT INTO BASE(ID) VALUES(@I) SET @I+=1 if (@I%10000=0 ) begin commit; end; END go --POPOLATE EventPerson TABLE DECLARE @I BIGINT=1 WHILE (@I&lt;5000) BEGIN BEGIN TRANSACTION INSERT INTO EventPerson(DUID,PersonInvolvedID) VALUES(@I,(SELECT TOP 1 ID FROM BASE ORDER BY NEWID())) SET @I+=1 IF(@I%10000=0 ) COMMIT TRANSACTION ; END GO
+| SELECT TOP 10 * FROM table_name ORDER BY rand(checksum(NEWID()));
+SELECT Items.Name, tblBooks.AuthorLastName, tblBooks.AuthorFirstName FROM Items Inner Join ( SELECT TOP 10 Recommended.ProductCode, SKUID FROM Recommended INNER JOIN Stock ON Recomended.ProductCode = Stock.ProductCode AND Stock.StatusCode = 1 WHERE (Recommended.Type = 'TOPICAL') ) reccomended on items.productcode - reccomended.ProductCode ORDER BY CHECKSUM(NEWID()
+CREATE TABLE TestDuration ( Id UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY, VALIDATION_TIMESTAMP DATETIME, ID_TICKET BIGINT, ID_PLACE BIGINT, OtherColumns CHAR(100) NULL ) INSERT INTO TestDuration (VALIDATION_TIMESTAMP, ID_TICKET, ID_PLACE) SELECT TOP 40000 DATEADD(minute, ROW_NUMBER() OVER (ORDER BY (SELECT 0)), GETDATE()), ABS(CHECKSUM(NEWID())) % 10, ABS(CHECKSUM(NEWID())) % 100 FROM master..spt_values v1, master..spt_values v2
+| SELECT TOP 1 * FROM urls WHERE (SELECT COUNT(*) FROM urlinfo WHERE urlid = urls.urlid) = 0 ORDER BY NEWID()
+| SELECT TOP (3) ProductId FROM Product ORDER BY NEWID();
+| SELECT TOP 5 * FROM tablename ORDER BY NEWID()
+| SELECT TOP (@TopType) AdvertID, IsAdvertImage, AdvertData FROM Adverts WHERE AdvertSize = @AdvertSize ORDER BY NEWID()
+| Select TOP 1(a.id), a.mls_number, a.parcel_name, a.property_type, a.ownership_type, b.filename, b.photoOrder, c.county_Name From property as a Inner JOIN (SELECT ListingID , filename, PhotoOrder FROM listingPhotos WHERE PhotoORder = 1 ) as b on a.id = b.ListingID LEFT JOIN counties as C on a.county_name = c.id WHERE a.isCommercial = 'True' Order By NEWID()
+| SELECT TOP 20 * FROM [YourTable] ORDER By NEWID()
+
+
+Statystyka ---
+Poprawnie zklasyfikowanych: 26
+Nie poprawnie zklasyfikowanych: 4
+Procent poprawnie zklasyfikowanych: 87%

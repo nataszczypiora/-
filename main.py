@@ -8,8 +8,9 @@ def random_sort_antipattern(tokens):
     return False
 
 def select_all_antipattern(tokens):
-    if 'ALL' in tokens:
-        return True
+    for i in range(0, len(tokens)-1):
+        if tokens[i] != 'L_PARENTIS' and tokens[i] != 'COUNT' and tokens[i+1] == 'ALL':
+            return True
     return False
 
 def search_by_regex_antipattern(tokens):

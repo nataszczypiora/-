@@ -2,8 +2,6 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    AMPERSAND
-    BACKSLASH
     DASH
     DOLLAR
     DOUBLE_DOTS
@@ -77,29 +75,31 @@ Rule 45    ARGS -> ARGS VARIABLE
 Rule 46    ARGS -> DISTINCT VARIABLE
 Rule 47    ARGS -> INNER_SELECT_C
 Rule 48    ARGS -> VARIABLE
-Rule 49    OPERATOR -> LESS
-Rule 50    OPERATOR -> MORE
-Rule 51    OPERATOR -> EQUAL
-Rule 52    OPERATOR -> NOT_EQUAL
-Rule 53    OPERATOR -> MORE_EQ
-Rule 54    OPERATOR -> LESS_EQ
-Rule 55    OPERATOR -> BETWEEN
-Rule 56    OPERATOR -> LIKE
-Rule 57    OPERATOR -> IN
-Rule 58    OPERATOR -> REGEX
-Rule 59    NEWID_C -> NEWID L_PARENTIS R_PARENTIS
-Rule 60    TOP_C -> TOP NUMBER ARGS
+Rule 49    ARGS -> P_COUNT
+Rule 50    P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS
+Rule 51    P_COUNT -> COUNT VARIABLE
+Rule 52    OPERATOR -> LESS
+Rule 53    OPERATOR -> MORE
+Rule 54    OPERATOR -> EQUAL
+Rule 55    OPERATOR -> NOT_EQUAL
+Rule 56    OPERATOR -> MORE_EQ
+Rule 57    OPERATOR -> LESS_EQ
+Rule 58    OPERATOR -> BETWEEN
+Rule 59    OPERATOR -> LIKE
+Rule 60    OPERATOR -> IN
+Rule 61    OPERATOR -> REGEX
+Rule 62    NEWID_C -> NEWID L_PARENTIS R_PARENTIS
+Rule 63    TOP_C -> TOP NUMBER ARGS
 
 Terminals, with rules where they appear
 
-ALL                  : 5
-AMPERSAND            : 
+ALL                  : 5 50
 ANY                  : 33
 ASC                  : 40
-BACKSLASH            : 
-BETWEEN              : 55
+BETWEEN              : 58
 BY                   : 36 38 39 40 41
 COMMA                : 44
+COUNT                : 50 51
 DASH                 : 
 DESC                 : 39
 DISTINCT             : 46
@@ -107,7 +107,7 @@ DOLLAR               :
 DOUBLE_DOTS          : 
 EMPTY_STRING         : 35
 END                  : 1 2
-EQUAL                : 29 51
+EQUAL                : 29 54
 FENCE                : 
 FROM                 : 6 7
 FULL                 : 25
@@ -116,26 +116,26 @@ GROUP                : 36
 HASH                 : 
 HAT                  : 
 HAVING               : 31
-IN                   : 57
+IN                   : 60
 INNER                : 22
 JOIN                 : 27
 LEFT                 : 23
-LESS                 : 49
-LESS_EQ              : 54
-LIKE                 : 56
+LESS                 : 52
+LESS_EQ              : 57
+LIKE                 : 59
 LIMIT                : 42
 LINUX_HOME           : 
 L_BRACE              : 
-L_PARENTIS           : 37 59
+L_PARENTIS           : 37 50 62
 L_SQUARE_PARENTIS    : 
 MINUS                : 
-MORE                 : 50
-MORE_EQ              : 53
-NEWID                : 59
+MORE                 : 53
+MORE_EQ              : 56
+NEWID                : 62
 NOT                  : 
-NOT_EQUAL            : 52
+NOT_EQUAL            : 55
 NULL                 : 
-NUMBER               : 42 43 60
+NUMBER               : 42 43 63
 OFFSET               : 43
 ON                   : 28 29
 ORDER                : 38 39 40 41
@@ -143,25 +143,25 @@ OUTER                : 26
 PLUS                 : 
 QUESTION_MARK        : 
 QUOTE                : 33 33
-REGEX                : 58
+REGEX                : 61
 RIGHT                : 24
 R_BRACE              : 
-R_PARENTIS           : 37 59
+R_PARENTIS           : 37 50 62
 R_SQUARE_PARENTIS    : 
 SCREAM               : 
 SELECT               : 3 4 5 37
 SINGLE_CHAR          : 
 SLASH                : 
-TOP                  : 60
+TOP                  : 63
 UNDERSCORE           : 
-VARIABLE             : 28 29 29 32 34 36 38 39 40 44 45 46 48
+VARIABLE             : 28 29 29 32 34 36 38 39 40 44 45 46 48 51
 WHERE                : 30
 error                : 
 
 Nonterminals, with rules where they appear
 
 ADDITIONAL_CLAUSES   : 7 8 9 10 11 12 13 14
-ARGS                 : 3 6 7 27 37 44 45 60
+ARGS                 : 3 6 7 27 37 44 45 63
 CONDITION            : 30 31
 FROM_PARSE           : 3 4 5 37
 GROUP_BY_C           : 10 17
@@ -174,6 +174,7 @@ NEWID_C              : 41
 OFFSET_C             : 14 21
 OPERATOR             : 32
 ORDER_BY_C           : 12 19
+P_COUNT              : 49
 TOP_C                : 4
 WHERE_C              : 9 16
 program              : 2 0
@@ -224,24 +225,29 @@ state 3
     (46) ARGS -> . DISTINCT VARIABLE
     (47) ARGS -> . INNER_SELECT_C
     (48) ARGS -> . VARIABLE
-    (60) TOP_C -> . TOP NUMBER ARGS
+    (49) ARGS -> . P_COUNT
+    (63) TOP_C -> . TOP NUMBER ARGS
     (37) INNER_SELECT_C -> . L_PARENTIS SELECT ARGS FROM_PARSE R_PARENTIS
+    (50) P_COUNT -> . COUNT L_PARENTIS ALL R_PARENTIS
+    (51) P_COUNT -> . COUNT VARIABLE
 
     ALL             shift and go to state 8
     DISTINCT        shift and go to state 10
     VARIABLE        shift and go to state 9
-    TOP             shift and go to state 12
-    L_PARENTIS      shift and go to state 13
+    TOP             shift and go to state 13
+    L_PARENTIS      shift and go to state 14
+    COUNT           shift and go to state 15
 
     ARGS                           shift and go to state 6
     TOP_C                          shift and go to state 7
     INNER_SELECT_C                 shift and go to state 11
+    P_COUNT                        shift and go to state 12
 
 state 4
 
     (2) program -> program select_tree . END
 
-    END             shift and go to state 14
+    END             shift and go to state 16
 
 
 state 5
@@ -260,11 +266,11 @@ state 6
     (6) FROM_PARSE -> . FROM ARGS
     (7) FROM_PARSE -> . FROM ARGS ADDITIONAL_CLAUSES
 
-    COMMA           shift and go to state 16
-    VARIABLE        shift and go to state 17
-    FROM            shift and go to state 18
+    COMMA           shift and go to state 18
+    VARIABLE        shift and go to state 19
+    FROM            shift and go to state 20
 
-    FROM_PARSE                     shift and go to state 15
+    FROM_PARSE                     shift and go to state 17
 
 state 7
 
@@ -272,9 +278,9 @@ state 7
     (6) FROM_PARSE -> . FROM ARGS
     (7) FROM_PARSE -> . FROM ARGS ADDITIONAL_CLAUSES
 
-    FROM            shift and go to state 18
+    FROM            shift and go to state 20
 
-    FROM_PARSE                     shift and go to state 19
+    FROM_PARSE                     shift and go to state 21
 
 state 8
 
@@ -282,9 +288,9 @@ state 8
     (6) FROM_PARSE -> . FROM ARGS
     (7) FROM_PARSE -> . FROM ARGS ADDITIONAL_CLAUSES
 
-    FROM            shift and go to state 18
+    FROM            shift and go to state 20
 
-    FROM_PARSE                     shift and go to state 20
+    FROM_PARSE                     shift and go to state 22
 
 state 9
 
@@ -314,7 +320,7 @@ state 10
 
     (46) ARGS -> DISTINCT . VARIABLE
 
-    VARIABLE        shift and go to state 21
+    VARIABLE        shift and go to state 23
 
 
 state 11
@@ -343,19 +349,52 @@ state 11
 
 state 12
 
-    (60) TOP_C -> TOP . NUMBER ARGS
+    (49) ARGS -> P_COUNT .
 
-    NUMBER          shift and go to state 22
+    COMMA           reduce using rule 49 (ARGS -> P_COUNT .)
+    VARIABLE        reduce using rule 49 (ARGS -> P_COUNT .)
+    FROM            reduce using rule 49 (ARGS -> P_COUNT .)
+    INNER           reduce using rule 49 (ARGS -> P_COUNT .)
+    LEFT            reduce using rule 49 (ARGS -> P_COUNT .)
+    RIGHT           reduce using rule 49 (ARGS -> P_COUNT .)
+    FULL            reduce using rule 49 (ARGS -> P_COUNT .)
+    OUTER           reduce using rule 49 (ARGS -> P_COUNT .)
+    JOIN            reduce using rule 49 (ARGS -> P_COUNT .)
+    ON              reduce using rule 49 (ARGS -> P_COUNT .)
+    WHERE           reduce using rule 49 (ARGS -> P_COUNT .)
+    GROUP           reduce using rule 49 (ARGS -> P_COUNT .)
+    HAVING          reduce using rule 49 (ARGS -> P_COUNT .)
+    ORDER           reduce using rule 49 (ARGS -> P_COUNT .)
+    LIMIT           reduce using rule 49 (ARGS -> P_COUNT .)
+    OFFSET          reduce using rule 49 (ARGS -> P_COUNT .)
+    END             reduce using rule 49 (ARGS -> P_COUNT .)
+    R_PARENTIS      reduce using rule 49 (ARGS -> P_COUNT .)
 
 
 state 13
 
-    (37) INNER_SELECT_C -> L_PARENTIS . SELECT ARGS FROM_PARSE R_PARENTIS
+    (63) TOP_C -> TOP . NUMBER ARGS
 
-    SELECT          shift and go to state 23
+    NUMBER          shift and go to state 24
 
 
 state 14
+
+    (37) INNER_SELECT_C -> L_PARENTIS . SELECT ARGS FROM_PARSE R_PARENTIS
+
+    SELECT          shift and go to state 25
+
+
+state 15
+
+    (50) P_COUNT -> COUNT . L_PARENTIS ALL R_PARENTIS
+    (51) P_COUNT -> COUNT . VARIABLE
+
+    L_PARENTIS      shift and go to state 26
+    VARIABLE        shift and go to state 27
+
+
+state 16
 
     (2) program -> program select_tree END .
 
@@ -363,21 +402,21 @@ state 14
     $end            reduce using rule 2 (program -> program select_tree END .)
 
 
-state 15
+state 17
 
     (3) select_tree -> SELECT ARGS FROM_PARSE .
 
     END             reduce using rule 3 (select_tree -> SELECT ARGS FROM_PARSE .)
 
 
-state 16
+state 18
 
     (44) ARGS -> ARGS COMMA . VARIABLE
 
-    VARIABLE        shift and go to state 24
+    VARIABLE        shift and go to state 28
 
 
-state 17
+state 19
 
     (45) ARGS -> ARGS VARIABLE .
 
@@ -401,7 +440,7 @@ state 17
     R_PARENTIS      reduce using rule 45 (ARGS -> ARGS VARIABLE .)
 
 
-state 18
+state 20
 
     (6) FROM_PARSE -> FROM . ARGS
     (7) FROM_PARSE -> FROM . ARGS ADDITIONAL_CLAUSES
@@ -410,30 +449,35 @@ state 18
     (46) ARGS -> . DISTINCT VARIABLE
     (47) ARGS -> . INNER_SELECT_C
     (48) ARGS -> . VARIABLE
+    (49) ARGS -> . P_COUNT
     (37) INNER_SELECT_C -> . L_PARENTIS SELECT ARGS FROM_PARSE R_PARENTIS
+    (50) P_COUNT -> . COUNT L_PARENTIS ALL R_PARENTIS
+    (51) P_COUNT -> . COUNT VARIABLE
 
     DISTINCT        shift and go to state 10
     VARIABLE        shift and go to state 9
-    L_PARENTIS      shift and go to state 13
+    L_PARENTIS      shift and go to state 14
+    COUNT           shift and go to state 15
 
-    ARGS                           shift and go to state 25
+    ARGS                           shift and go to state 29
     INNER_SELECT_C                 shift and go to state 11
+    P_COUNT                        shift and go to state 12
 
-state 19
+state 21
 
     (4) select_tree -> SELECT TOP_C FROM_PARSE .
 
     END             reduce using rule 4 (select_tree -> SELECT TOP_C FROM_PARSE .)
 
 
-state 20
+state 22
 
     (5) select_tree -> SELECT ALL FROM_PARSE .
 
     END             reduce using rule 5 (select_tree -> SELECT ALL FROM_PARSE .)
 
 
-state 21
+state 23
 
     (46) ARGS -> DISTINCT VARIABLE .
 
@@ -457,24 +501,29 @@ state 21
     R_PARENTIS      reduce using rule 46 (ARGS -> DISTINCT VARIABLE .)
 
 
-state 22
+state 24
 
-    (60) TOP_C -> TOP NUMBER . ARGS
+    (63) TOP_C -> TOP NUMBER . ARGS
     (44) ARGS -> . ARGS COMMA VARIABLE
     (45) ARGS -> . ARGS VARIABLE
     (46) ARGS -> . DISTINCT VARIABLE
     (47) ARGS -> . INNER_SELECT_C
     (48) ARGS -> . VARIABLE
+    (49) ARGS -> . P_COUNT
     (37) INNER_SELECT_C -> . L_PARENTIS SELECT ARGS FROM_PARSE R_PARENTIS
+    (50) P_COUNT -> . COUNT L_PARENTIS ALL R_PARENTIS
+    (51) P_COUNT -> . COUNT VARIABLE
 
     DISTINCT        shift and go to state 10
     VARIABLE        shift and go to state 9
-    L_PARENTIS      shift and go to state 13
+    L_PARENTIS      shift and go to state 14
+    COUNT           shift and go to state 15
 
-    ARGS                           shift and go to state 26
+    ARGS                           shift and go to state 30
     INNER_SELECT_C                 shift and go to state 11
+    P_COUNT                        shift and go to state 12
 
-state 23
+state 25
 
     (37) INNER_SELECT_C -> L_PARENTIS SELECT . ARGS FROM_PARSE R_PARENTIS
     (44) ARGS -> . ARGS COMMA VARIABLE
@@ -482,16 +531,52 @@ state 23
     (46) ARGS -> . DISTINCT VARIABLE
     (47) ARGS -> . INNER_SELECT_C
     (48) ARGS -> . VARIABLE
+    (49) ARGS -> . P_COUNT
     (37) INNER_SELECT_C -> . L_PARENTIS SELECT ARGS FROM_PARSE R_PARENTIS
+    (50) P_COUNT -> . COUNT L_PARENTIS ALL R_PARENTIS
+    (51) P_COUNT -> . COUNT VARIABLE
 
     DISTINCT        shift and go to state 10
     VARIABLE        shift and go to state 9
-    L_PARENTIS      shift and go to state 13
+    L_PARENTIS      shift and go to state 14
+    COUNT           shift and go to state 15
 
-    ARGS                           shift and go to state 27
+    ARGS                           shift and go to state 31
     INNER_SELECT_C                 shift and go to state 11
+    P_COUNT                        shift and go to state 12
 
-state 24
+state 26
+
+    (50) P_COUNT -> COUNT L_PARENTIS . ALL R_PARENTIS
+
+    ALL             shift and go to state 32
+
+
+state 27
+
+    (51) P_COUNT -> COUNT VARIABLE .
+
+    COMMA           reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    VARIABLE        reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    FROM            reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    INNER           reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    LEFT            reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    RIGHT           reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    FULL            reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    OUTER           reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    JOIN            reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    ON              reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    WHERE           reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    GROUP           reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    HAVING          reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    ORDER           reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    LIMIT           reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    OFFSET          reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    END             reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+    R_PARENTIS      reduce using rule 51 (P_COUNT -> COUNT VARIABLE .)
+
+
+state 28
 
     (44) ARGS -> ARGS COMMA VARIABLE .
 
@@ -515,7 +600,7 @@ state 24
     R_PARENTIS      reduce using rule 44 (ARGS -> ARGS COMMA VARIABLE .)
 
 
-state 25
+state 29
 
     (6) FROM_PARSE -> FROM ARGS .
     (7) FROM_PARSE -> FROM ARGS . ADDITIONAL_CLAUSES
@@ -555,43 +640,43 @@ state 25
 
     END             reduce using rule 6 (FROM_PARSE -> FROM ARGS .)
     R_PARENTIS      reduce using rule 6 (FROM_PARSE -> FROM ARGS .)
-    COMMA           shift and go to state 16
-    VARIABLE        shift and go to state 17
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
-    WHERE           shift and go to state 43
-    GROUP           shift and go to state 44
-    HAVING          shift and go to state 45
-    ORDER           shift and go to state 46
-    LIMIT           shift and go to state 47
-    OFFSET          shift and go to state 48
+    COMMA           shift and go to state 18
+    VARIABLE        shift and go to state 19
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
+    WHERE           shift and go to state 48
+    GROUP           shift and go to state 49
+    HAVING          shift and go to state 50
+    ORDER           shift and go to state 51
+    LIMIT           shift and go to state 52
+    OFFSET          shift and go to state 53
 
-    ADDITIONAL_CLAUSES             shift and go to state 28
-    JOIN_C                         shift and go to state 29
-    WHERE_C                        shift and go to state 30
-    GROUP_BY_C                     shift and go to state 31
-    HAVING_C                       shift and go to state 32
-    ORDER_BY_C                     shift and go to state 33
-    LIMIT_C                        shift and go to state 34
-    OFFSET_C                       shift and go to state 35
+    ADDITIONAL_CLAUSES             shift and go to state 33
+    JOIN_C                         shift and go to state 34
+    WHERE_C                        shift and go to state 35
+    GROUP_BY_C                     shift and go to state 36
+    HAVING_C                       shift and go to state 37
+    ORDER_BY_C                     shift and go to state 38
+    LIMIT_C                        shift and go to state 39
+    OFFSET_C                       shift and go to state 40
 
-state 26
+state 30
 
-    (60) TOP_C -> TOP NUMBER ARGS .
+    (63) TOP_C -> TOP NUMBER ARGS .
     (44) ARGS -> ARGS . COMMA VARIABLE
     (45) ARGS -> ARGS . VARIABLE
 
-    FROM            reduce using rule 60 (TOP_C -> TOP NUMBER ARGS .)
-    COMMA           shift and go to state 16
-    VARIABLE        shift and go to state 17
+    FROM            reduce using rule 63 (TOP_C -> TOP NUMBER ARGS .)
+    COMMA           shift and go to state 18
+    VARIABLE        shift and go to state 19
 
 
-state 27
+state 31
 
     (37) INNER_SELECT_C -> L_PARENTIS SELECT ARGS . FROM_PARSE R_PARENTIS
     (44) ARGS -> ARGS . COMMA VARIABLE
@@ -599,13 +684,20 @@ state 27
     (6) FROM_PARSE -> . FROM ARGS
     (7) FROM_PARSE -> . FROM ARGS ADDITIONAL_CLAUSES
 
-    COMMA           shift and go to state 16
-    VARIABLE        shift and go to state 17
-    FROM            shift and go to state 18
+    COMMA           shift and go to state 18
+    VARIABLE        shift and go to state 19
+    FROM            shift and go to state 20
 
-    FROM_PARSE                     shift and go to state 49
+    FROM_PARSE                     shift and go to state 54
 
-state 28
+state 32
+
+    (50) P_COUNT -> COUNT L_PARENTIS ALL . R_PARENTIS
+
+    R_PARENTIS      shift and go to state 55
+
+
+state 33
 
     (7) FROM_PARSE -> FROM ARGS ADDITIONAL_CLAUSES .
 
@@ -613,7 +705,7 @@ state 28
     R_PARENTIS      reduce using rule 7 (FROM_PARSE -> FROM ARGS ADDITIONAL_CLAUSES .)
 
 
-state 29
+state 34
 
     (8) ADDITIONAL_CLAUSES -> JOIN_C . ADDITIONAL_CLAUSES
     (15) ADDITIONAL_CLAUSES -> JOIN_C .
@@ -651,30 +743,30 @@ state 29
 
     END             reduce using rule 15 (ADDITIONAL_CLAUSES -> JOIN_C .)
     R_PARENTIS      reduce using rule 15 (ADDITIONAL_CLAUSES -> JOIN_C .)
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
-    WHERE           shift and go to state 43
-    GROUP           shift and go to state 44
-    HAVING          shift and go to state 45
-    ORDER           shift and go to state 46
-    LIMIT           shift and go to state 47
-    OFFSET          shift and go to state 48
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
+    WHERE           shift and go to state 48
+    GROUP           shift and go to state 49
+    HAVING          shift and go to state 50
+    ORDER           shift and go to state 51
+    LIMIT           shift and go to state 52
+    OFFSET          shift and go to state 53
 
-    JOIN_C                         shift and go to state 29
-    ADDITIONAL_CLAUSES             shift and go to state 50
-    WHERE_C                        shift and go to state 30
-    GROUP_BY_C                     shift and go to state 31
-    HAVING_C                       shift and go to state 32
-    ORDER_BY_C                     shift and go to state 33
-    LIMIT_C                        shift and go to state 34
-    OFFSET_C                       shift and go to state 35
+    JOIN_C                         shift and go to state 34
+    ADDITIONAL_CLAUSES             shift and go to state 56
+    WHERE_C                        shift and go to state 35
+    GROUP_BY_C                     shift and go to state 36
+    HAVING_C                       shift and go to state 37
+    ORDER_BY_C                     shift and go to state 38
+    LIMIT_C                        shift and go to state 39
+    OFFSET_C                       shift and go to state 40
 
-state 30
+state 35
 
     (9) ADDITIONAL_CLAUSES -> WHERE_C . ADDITIONAL_CLAUSES
     (16) ADDITIONAL_CLAUSES -> WHERE_C .
@@ -712,30 +804,30 @@ state 30
 
     END             reduce using rule 16 (ADDITIONAL_CLAUSES -> WHERE_C .)
     R_PARENTIS      reduce using rule 16 (ADDITIONAL_CLAUSES -> WHERE_C .)
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
-    WHERE           shift and go to state 43
-    GROUP           shift and go to state 44
-    HAVING          shift and go to state 45
-    ORDER           shift and go to state 46
-    LIMIT           shift and go to state 47
-    OFFSET          shift and go to state 48
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
+    WHERE           shift and go to state 48
+    GROUP           shift and go to state 49
+    HAVING          shift and go to state 50
+    ORDER           shift and go to state 51
+    LIMIT           shift and go to state 52
+    OFFSET          shift and go to state 53
 
-    WHERE_C                        shift and go to state 30
-    ADDITIONAL_CLAUSES             shift and go to state 51
-    JOIN_C                         shift and go to state 29
-    GROUP_BY_C                     shift and go to state 31
-    HAVING_C                       shift and go to state 32
-    ORDER_BY_C                     shift and go to state 33
-    LIMIT_C                        shift and go to state 34
-    OFFSET_C                       shift and go to state 35
+    WHERE_C                        shift and go to state 35
+    ADDITIONAL_CLAUSES             shift and go to state 57
+    JOIN_C                         shift and go to state 34
+    GROUP_BY_C                     shift and go to state 36
+    HAVING_C                       shift and go to state 37
+    ORDER_BY_C                     shift and go to state 38
+    LIMIT_C                        shift and go to state 39
+    OFFSET_C                       shift and go to state 40
 
-state 31
+state 36
 
     (10) ADDITIONAL_CLAUSES -> GROUP_BY_C . ADDITIONAL_CLAUSES
     (17) ADDITIONAL_CLAUSES -> GROUP_BY_C .
@@ -773,30 +865,30 @@ state 31
 
     END             reduce using rule 17 (ADDITIONAL_CLAUSES -> GROUP_BY_C .)
     R_PARENTIS      reduce using rule 17 (ADDITIONAL_CLAUSES -> GROUP_BY_C .)
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
-    WHERE           shift and go to state 43
-    GROUP           shift and go to state 44
-    HAVING          shift and go to state 45
-    ORDER           shift and go to state 46
-    LIMIT           shift and go to state 47
-    OFFSET          shift and go to state 48
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
+    WHERE           shift and go to state 48
+    GROUP           shift and go to state 49
+    HAVING          shift and go to state 50
+    ORDER           shift and go to state 51
+    LIMIT           shift and go to state 52
+    OFFSET          shift and go to state 53
 
-    GROUP_BY_C                     shift and go to state 31
-    ADDITIONAL_CLAUSES             shift and go to state 52
-    JOIN_C                         shift and go to state 29
-    WHERE_C                        shift and go to state 30
-    HAVING_C                       shift and go to state 32
-    ORDER_BY_C                     shift and go to state 33
-    LIMIT_C                        shift and go to state 34
-    OFFSET_C                       shift and go to state 35
+    GROUP_BY_C                     shift and go to state 36
+    ADDITIONAL_CLAUSES             shift and go to state 58
+    JOIN_C                         shift and go to state 34
+    WHERE_C                        shift and go to state 35
+    HAVING_C                       shift and go to state 37
+    ORDER_BY_C                     shift and go to state 38
+    LIMIT_C                        shift and go to state 39
+    OFFSET_C                       shift and go to state 40
 
-state 32
+state 37
 
     (11) ADDITIONAL_CLAUSES -> HAVING_C . ADDITIONAL_CLAUSES
     (18) ADDITIONAL_CLAUSES -> HAVING_C .
@@ -834,30 +926,30 @@ state 32
 
     END             reduce using rule 18 (ADDITIONAL_CLAUSES -> HAVING_C .)
     R_PARENTIS      reduce using rule 18 (ADDITIONAL_CLAUSES -> HAVING_C .)
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
-    WHERE           shift and go to state 43
-    GROUP           shift and go to state 44
-    HAVING          shift and go to state 45
-    ORDER           shift and go to state 46
-    LIMIT           shift and go to state 47
-    OFFSET          shift and go to state 48
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
+    WHERE           shift and go to state 48
+    GROUP           shift and go to state 49
+    HAVING          shift and go to state 50
+    ORDER           shift and go to state 51
+    LIMIT           shift and go to state 52
+    OFFSET          shift and go to state 53
 
-    HAVING_C                       shift and go to state 32
-    ADDITIONAL_CLAUSES             shift and go to state 53
-    JOIN_C                         shift and go to state 29
-    WHERE_C                        shift and go to state 30
-    GROUP_BY_C                     shift and go to state 31
-    ORDER_BY_C                     shift and go to state 33
-    LIMIT_C                        shift and go to state 34
-    OFFSET_C                       shift and go to state 35
+    HAVING_C                       shift and go to state 37
+    ADDITIONAL_CLAUSES             shift and go to state 59
+    JOIN_C                         shift and go to state 34
+    WHERE_C                        shift and go to state 35
+    GROUP_BY_C                     shift and go to state 36
+    ORDER_BY_C                     shift and go to state 38
+    LIMIT_C                        shift and go to state 39
+    OFFSET_C                       shift and go to state 40
 
-state 33
+state 38
 
     (12) ADDITIONAL_CLAUSES -> ORDER_BY_C . ADDITIONAL_CLAUSES
     (19) ADDITIONAL_CLAUSES -> ORDER_BY_C .
@@ -895,30 +987,30 @@ state 33
 
     END             reduce using rule 19 (ADDITIONAL_CLAUSES -> ORDER_BY_C .)
     R_PARENTIS      reduce using rule 19 (ADDITIONAL_CLAUSES -> ORDER_BY_C .)
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
-    WHERE           shift and go to state 43
-    GROUP           shift and go to state 44
-    HAVING          shift and go to state 45
-    ORDER           shift and go to state 46
-    LIMIT           shift and go to state 47
-    OFFSET          shift and go to state 48
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
+    WHERE           shift and go to state 48
+    GROUP           shift and go to state 49
+    HAVING          shift and go to state 50
+    ORDER           shift and go to state 51
+    LIMIT           shift and go to state 52
+    OFFSET          shift and go to state 53
 
-    ORDER_BY_C                     shift and go to state 33
-    ADDITIONAL_CLAUSES             shift and go to state 54
-    JOIN_C                         shift and go to state 29
-    WHERE_C                        shift and go to state 30
-    GROUP_BY_C                     shift and go to state 31
-    HAVING_C                       shift and go to state 32
-    LIMIT_C                        shift and go to state 34
-    OFFSET_C                       shift and go to state 35
+    ORDER_BY_C                     shift and go to state 38
+    ADDITIONAL_CLAUSES             shift and go to state 60
+    JOIN_C                         shift and go to state 34
+    WHERE_C                        shift and go to state 35
+    GROUP_BY_C                     shift and go to state 36
+    HAVING_C                       shift and go to state 37
+    LIMIT_C                        shift and go to state 39
+    OFFSET_C                       shift and go to state 40
 
-state 34
+state 39
 
     (13) ADDITIONAL_CLAUSES -> LIMIT_C . ADDITIONAL_CLAUSES
     (20) ADDITIONAL_CLAUSES -> LIMIT_C .
@@ -956,30 +1048,30 @@ state 34
 
     END             reduce using rule 20 (ADDITIONAL_CLAUSES -> LIMIT_C .)
     R_PARENTIS      reduce using rule 20 (ADDITIONAL_CLAUSES -> LIMIT_C .)
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
-    WHERE           shift and go to state 43
-    GROUP           shift and go to state 44
-    HAVING          shift and go to state 45
-    ORDER           shift and go to state 46
-    LIMIT           shift and go to state 47
-    OFFSET          shift and go to state 48
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
+    WHERE           shift and go to state 48
+    GROUP           shift and go to state 49
+    HAVING          shift and go to state 50
+    ORDER           shift and go to state 51
+    LIMIT           shift and go to state 52
+    OFFSET          shift and go to state 53
 
-    LIMIT_C                        shift and go to state 34
-    ADDITIONAL_CLAUSES             shift and go to state 55
-    JOIN_C                         shift and go to state 29
-    WHERE_C                        shift and go to state 30
-    GROUP_BY_C                     shift and go to state 31
-    HAVING_C                       shift and go to state 32
-    ORDER_BY_C                     shift and go to state 33
-    OFFSET_C                       shift and go to state 35
+    LIMIT_C                        shift and go to state 39
+    ADDITIONAL_CLAUSES             shift and go to state 61
+    JOIN_C                         shift and go to state 34
+    WHERE_C                        shift and go to state 35
+    GROUP_BY_C                     shift and go to state 36
+    HAVING_C                       shift and go to state 37
+    ORDER_BY_C                     shift and go to state 38
+    OFFSET_C                       shift and go to state 40
 
-state 35
+state 40
 
     (14) ADDITIONAL_CLAUSES -> OFFSET_C . ADDITIONAL_CLAUSES
     (21) ADDITIONAL_CLAUSES -> OFFSET_C .
@@ -1017,30 +1109,30 @@ state 35
 
     END             reduce using rule 21 (ADDITIONAL_CLAUSES -> OFFSET_C .)
     R_PARENTIS      reduce using rule 21 (ADDITIONAL_CLAUSES -> OFFSET_C .)
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
-    WHERE           shift and go to state 43
-    GROUP           shift and go to state 44
-    HAVING          shift and go to state 45
-    ORDER           shift and go to state 46
-    LIMIT           shift and go to state 47
-    OFFSET          shift and go to state 48
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
+    WHERE           shift and go to state 48
+    GROUP           shift and go to state 49
+    HAVING          shift and go to state 50
+    ORDER           shift and go to state 51
+    LIMIT           shift and go to state 52
+    OFFSET          shift and go to state 53
 
-    OFFSET_C                       shift and go to state 35
-    ADDITIONAL_CLAUSES             shift and go to state 56
-    JOIN_C                         shift and go to state 29
-    WHERE_C                        shift and go to state 30
-    GROUP_BY_C                     shift and go to state 31
-    HAVING_C                       shift and go to state 32
-    ORDER_BY_C                     shift and go to state 33
-    LIMIT_C                        shift and go to state 34
+    OFFSET_C                       shift and go to state 40
+    ADDITIONAL_CLAUSES             shift and go to state 62
+    JOIN_C                         shift and go to state 34
+    WHERE_C                        shift and go to state 35
+    GROUP_BY_C                     shift and go to state 36
+    HAVING_C                       shift and go to state 37
+    ORDER_BY_C                     shift and go to state 38
+    LIMIT_C                        shift and go to state 39
 
-state 36
+state 41
 
     (22) JOIN_C -> INNER . JOIN_C
     (22) JOIN_C -> . INNER JOIN_C
@@ -1052,17 +1144,17 @@ state 36
     (28) JOIN_C -> . ON VARIABLE
     (29) JOIN_C -> . ON VARIABLE EQUAL VARIABLE
 
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
 
-    JOIN_C                         shift and go to state 57
+    JOIN_C                         shift and go to state 63
 
-state 37
+state 42
 
     (23) JOIN_C -> LEFT . JOIN_C
     (22) JOIN_C -> . INNER JOIN_C
@@ -1074,17 +1166,17 @@ state 37
     (28) JOIN_C -> . ON VARIABLE
     (29) JOIN_C -> . ON VARIABLE EQUAL VARIABLE
 
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
 
-    JOIN_C                         shift and go to state 58
+    JOIN_C                         shift and go to state 64
 
-state 38
+state 43
 
     (24) JOIN_C -> RIGHT . JOIN_C
     (22) JOIN_C -> . INNER JOIN_C
@@ -1096,17 +1188,17 @@ state 38
     (28) JOIN_C -> . ON VARIABLE
     (29) JOIN_C -> . ON VARIABLE EQUAL VARIABLE
 
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
 
-    JOIN_C                         shift and go to state 59
+    JOIN_C                         shift and go to state 65
 
-state 39
+state 44
 
     (25) JOIN_C -> FULL . JOIN_C
     (22) JOIN_C -> . INNER JOIN_C
@@ -1118,17 +1210,17 @@ state 39
     (28) JOIN_C -> . ON VARIABLE
     (29) JOIN_C -> . ON VARIABLE EQUAL VARIABLE
 
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
 
-    JOIN_C                         shift and go to state 60
+    JOIN_C                         shift and go to state 66
 
-state 40
+state 45
 
     (26) JOIN_C -> OUTER . JOIN_C
     (22) JOIN_C -> . INNER JOIN_C
@@ -1140,17 +1232,17 @@ state 40
     (28) JOIN_C -> . ON VARIABLE
     (29) JOIN_C -> . ON VARIABLE EQUAL VARIABLE
 
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
 
-    JOIN_C                         shift and go to state 61
+    JOIN_C                         shift and go to state 67
 
-state 41
+state 46
 
     (27) JOIN_C -> JOIN . ARGS JOIN_C
     (44) ARGS -> . ARGS COMMA VARIABLE
@@ -1158,80 +1250,109 @@ state 41
     (46) ARGS -> . DISTINCT VARIABLE
     (47) ARGS -> . INNER_SELECT_C
     (48) ARGS -> . VARIABLE
+    (49) ARGS -> . P_COUNT
     (37) INNER_SELECT_C -> . L_PARENTIS SELECT ARGS FROM_PARSE R_PARENTIS
+    (50) P_COUNT -> . COUNT L_PARENTIS ALL R_PARENTIS
+    (51) P_COUNT -> . COUNT VARIABLE
 
     DISTINCT        shift and go to state 10
     VARIABLE        shift and go to state 9
-    L_PARENTIS      shift and go to state 13
+    L_PARENTIS      shift and go to state 14
+    COUNT           shift and go to state 15
 
-    ARGS                           shift and go to state 62
+    ARGS                           shift and go to state 68
     INNER_SELECT_C                 shift and go to state 11
+    P_COUNT                        shift and go to state 12
 
-state 42
+state 47
 
     (28) JOIN_C -> ON . VARIABLE
     (29) JOIN_C -> ON . VARIABLE EQUAL VARIABLE
 
-    VARIABLE        shift and go to state 63
+    VARIABLE        shift and go to state 69
 
 
-state 43
+state 48
 
     (30) WHERE_C -> WHERE . CONDITION
     (32) CONDITION -> . VARIABLE OPERATOR MATCH
 
-    VARIABLE        shift and go to state 65
+    VARIABLE        shift and go to state 71
 
-    CONDITION                      shift and go to state 64
+    CONDITION                      shift and go to state 70
 
-state 44
+state 49
 
     (36) GROUP_BY_C -> GROUP . BY VARIABLE
 
-    BY              shift and go to state 66
+    BY              shift and go to state 72
 
 
-state 45
+state 50
 
     (31) HAVING_C -> HAVING . CONDITION
     (32) CONDITION -> . VARIABLE OPERATOR MATCH
 
-    VARIABLE        shift and go to state 65
+    VARIABLE        shift and go to state 71
 
-    CONDITION                      shift and go to state 67
+    CONDITION                      shift and go to state 73
 
-state 46
+state 51
 
     (38) ORDER_BY_C -> ORDER . BY VARIABLE
     (39) ORDER_BY_C -> ORDER . BY VARIABLE DESC
     (40) ORDER_BY_C -> ORDER . BY VARIABLE ASC
     (41) ORDER_BY_C -> ORDER . BY NEWID_C
 
-    BY              shift and go to state 68
+    BY              shift and go to state 74
 
 
-state 47
+state 52
 
     (42) LIMIT_C -> LIMIT . NUMBER
 
-    NUMBER          shift and go to state 69
+    NUMBER          shift and go to state 75
 
 
-state 48
+state 53
 
     (43) OFFSET_C -> OFFSET . NUMBER
 
-    NUMBER          shift and go to state 70
+    NUMBER          shift and go to state 76
 
 
-state 49
+state 54
 
     (37) INNER_SELECT_C -> L_PARENTIS SELECT ARGS FROM_PARSE . R_PARENTIS
 
-    R_PARENTIS      shift and go to state 71
+    R_PARENTIS      shift and go to state 77
 
 
-state 50
+state 55
+
+    (50) P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .
+
+    COMMA           reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    VARIABLE        reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    FROM            reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    INNER           reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    LEFT            reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    RIGHT           reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    FULL            reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    OUTER           reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    JOIN            reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    ON              reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    WHERE           reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    GROUP           reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    HAVING          reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    ORDER           reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    LIMIT           reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    OFFSET          reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    END             reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+    R_PARENTIS      reduce using rule 50 (P_COUNT -> COUNT L_PARENTIS ALL R_PARENTIS .)
+
+
+state 56
 
     (8) ADDITIONAL_CLAUSES -> JOIN_C ADDITIONAL_CLAUSES .
 
@@ -1239,7 +1360,7 @@ state 50
     R_PARENTIS      reduce using rule 8 (ADDITIONAL_CLAUSES -> JOIN_C ADDITIONAL_CLAUSES .)
 
 
-state 51
+state 57
 
     (9) ADDITIONAL_CLAUSES -> WHERE_C ADDITIONAL_CLAUSES .
 
@@ -1247,7 +1368,7 @@ state 51
     R_PARENTIS      reduce using rule 9 (ADDITIONAL_CLAUSES -> WHERE_C ADDITIONAL_CLAUSES .)
 
 
-state 52
+state 58
 
     (10) ADDITIONAL_CLAUSES -> GROUP_BY_C ADDITIONAL_CLAUSES .
 
@@ -1255,7 +1376,7 @@ state 52
     R_PARENTIS      reduce using rule 10 (ADDITIONAL_CLAUSES -> GROUP_BY_C ADDITIONAL_CLAUSES .)
 
 
-state 53
+state 59
 
     (11) ADDITIONAL_CLAUSES -> HAVING_C ADDITIONAL_CLAUSES .
 
@@ -1263,7 +1384,7 @@ state 53
     R_PARENTIS      reduce using rule 11 (ADDITIONAL_CLAUSES -> HAVING_C ADDITIONAL_CLAUSES .)
 
 
-state 54
+state 60
 
     (12) ADDITIONAL_CLAUSES -> ORDER_BY_C ADDITIONAL_CLAUSES .
 
@@ -1271,7 +1392,7 @@ state 54
     R_PARENTIS      reduce using rule 12 (ADDITIONAL_CLAUSES -> ORDER_BY_C ADDITIONAL_CLAUSES .)
 
 
-state 55
+state 61
 
     (13) ADDITIONAL_CLAUSES -> LIMIT_C ADDITIONAL_CLAUSES .
 
@@ -1279,7 +1400,7 @@ state 55
     R_PARENTIS      reduce using rule 13 (ADDITIONAL_CLAUSES -> LIMIT_C ADDITIONAL_CLAUSES .)
 
 
-state 56
+state 62
 
     (14) ADDITIONAL_CLAUSES -> OFFSET_C ADDITIONAL_CLAUSES .
 
@@ -1287,7 +1408,7 @@ state 56
     R_PARENTIS      reduce using rule 14 (ADDITIONAL_CLAUSES -> OFFSET_C ADDITIONAL_CLAUSES .)
 
 
-state 57
+state 63
 
     (22) JOIN_C -> INNER JOIN_C .
 
@@ -1308,7 +1429,7 @@ state 57
     R_PARENTIS      reduce using rule 22 (JOIN_C -> INNER JOIN_C .)
 
 
-state 58
+state 64
 
     (23) JOIN_C -> LEFT JOIN_C .
 
@@ -1329,7 +1450,7 @@ state 58
     R_PARENTIS      reduce using rule 23 (JOIN_C -> LEFT JOIN_C .)
 
 
-state 59
+state 65
 
     (24) JOIN_C -> RIGHT JOIN_C .
 
@@ -1350,7 +1471,7 @@ state 59
     R_PARENTIS      reduce using rule 24 (JOIN_C -> RIGHT JOIN_C .)
 
 
-state 60
+state 66
 
     (25) JOIN_C -> FULL JOIN_C .
 
@@ -1371,7 +1492,7 @@ state 60
     R_PARENTIS      reduce using rule 25 (JOIN_C -> FULL JOIN_C .)
 
 
-state 61
+state 67
 
     (26) JOIN_C -> OUTER JOIN_C .
 
@@ -1392,7 +1513,7 @@ state 61
     R_PARENTIS      reduce using rule 26 (JOIN_C -> OUTER JOIN_C .)
 
 
-state 62
+state 68
 
     (27) JOIN_C -> JOIN ARGS . JOIN_C
     (44) ARGS -> ARGS . COMMA VARIABLE
@@ -1406,19 +1527,19 @@ state 62
     (28) JOIN_C -> . ON VARIABLE
     (29) JOIN_C -> . ON VARIABLE EQUAL VARIABLE
 
-    COMMA           shift and go to state 16
-    VARIABLE        shift and go to state 17
-    INNER           shift and go to state 36
-    LEFT            shift and go to state 37
-    RIGHT           shift and go to state 38
-    FULL            shift and go to state 39
-    OUTER           shift and go to state 40
-    JOIN            shift and go to state 41
-    ON              shift and go to state 42
+    COMMA           shift and go to state 18
+    VARIABLE        shift and go to state 19
+    INNER           shift and go to state 41
+    LEFT            shift and go to state 42
+    RIGHT           shift and go to state 43
+    FULL            shift and go to state 44
+    OUTER           shift and go to state 45
+    JOIN            shift and go to state 46
+    ON              shift and go to state 47
 
-    JOIN_C                         shift and go to state 72
+    JOIN_C                         shift and go to state 78
 
-state 63
+state 69
 
     (28) JOIN_C -> ON VARIABLE .
     (29) JOIN_C -> ON VARIABLE . EQUAL VARIABLE
@@ -1438,10 +1559,10 @@ state 63
     OFFSET          reduce using rule 28 (JOIN_C -> ON VARIABLE .)
     END             reduce using rule 28 (JOIN_C -> ON VARIABLE .)
     R_PARENTIS      reduce using rule 28 (JOIN_C -> ON VARIABLE .)
-    EQUAL           shift and go to state 73
+    EQUAL           shift and go to state 79
 
 
-state 64
+state 70
 
     (30) WHERE_C -> WHERE CONDITION .
 
@@ -1462,41 +1583,41 @@ state 64
     R_PARENTIS      reduce using rule 30 (WHERE_C -> WHERE CONDITION .)
 
 
-state 65
+state 71
 
     (32) CONDITION -> VARIABLE . OPERATOR MATCH
-    (49) OPERATOR -> . LESS
-    (50) OPERATOR -> . MORE
-    (51) OPERATOR -> . EQUAL
-    (52) OPERATOR -> . NOT_EQUAL
-    (53) OPERATOR -> . MORE_EQ
-    (54) OPERATOR -> . LESS_EQ
-    (55) OPERATOR -> . BETWEEN
-    (56) OPERATOR -> . LIKE
-    (57) OPERATOR -> . IN
-    (58) OPERATOR -> . REGEX
+    (52) OPERATOR -> . LESS
+    (53) OPERATOR -> . MORE
+    (54) OPERATOR -> . EQUAL
+    (55) OPERATOR -> . NOT_EQUAL
+    (56) OPERATOR -> . MORE_EQ
+    (57) OPERATOR -> . LESS_EQ
+    (58) OPERATOR -> . BETWEEN
+    (59) OPERATOR -> . LIKE
+    (60) OPERATOR -> . IN
+    (61) OPERATOR -> . REGEX
 
-    LESS            shift and go to state 75
-    MORE            shift and go to state 76
-    EQUAL           shift and go to state 77
-    NOT_EQUAL       shift and go to state 78
-    MORE_EQ         shift and go to state 79
-    LESS_EQ         shift and go to state 80
-    BETWEEN         shift and go to state 81
-    LIKE            shift and go to state 82
-    IN              shift and go to state 83
-    REGEX           shift and go to state 84
+    LESS            shift and go to state 81
+    MORE            shift and go to state 82
+    EQUAL           shift and go to state 83
+    NOT_EQUAL       shift and go to state 84
+    MORE_EQ         shift and go to state 85
+    LESS_EQ         shift and go to state 86
+    BETWEEN         shift and go to state 87
+    LIKE            shift and go to state 88
+    IN              shift and go to state 89
+    REGEX           shift and go to state 90
 
-    OPERATOR                       shift and go to state 74
+    OPERATOR                       shift and go to state 80
 
-state 66
+state 72
 
     (36) GROUP_BY_C -> GROUP BY . VARIABLE
 
-    VARIABLE        shift and go to state 85
+    VARIABLE        shift and go to state 91
 
 
-state 67
+state 73
 
     (31) HAVING_C -> HAVING CONDITION .
 
@@ -1517,20 +1638,20 @@ state 67
     R_PARENTIS      reduce using rule 31 (HAVING_C -> HAVING CONDITION .)
 
 
-state 68
+state 74
 
     (38) ORDER_BY_C -> ORDER BY . VARIABLE
     (39) ORDER_BY_C -> ORDER BY . VARIABLE DESC
     (40) ORDER_BY_C -> ORDER BY . VARIABLE ASC
     (41) ORDER_BY_C -> ORDER BY . NEWID_C
-    (59) NEWID_C -> . NEWID L_PARENTIS R_PARENTIS
+    (62) NEWID_C -> . NEWID L_PARENTIS R_PARENTIS
 
-    VARIABLE        shift and go to state 86
-    NEWID           shift and go to state 88
+    VARIABLE        shift and go to state 92
+    NEWID           shift and go to state 94
 
-    NEWID_C                        shift and go to state 87
+    NEWID_C                        shift and go to state 93
 
-state 69
+state 75
 
     (42) LIMIT_C -> LIMIT NUMBER .
 
@@ -1551,7 +1672,7 @@ state 69
     R_PARENTIS      reduce using rule 42 (LIMIT_C -> LIMIT NUMBER .)
 
 
-state 70
+state 76
 
     (43) OFFSET_C -> OFFSET NUMBER .
 
@@ -1572,7 +1693,7 @@ state 70
     R_PARENTIS      reduce using rule 43 (OFFSET_C -> OFFSET NUMBER .)
 
 
-state 71
+state 77
 
     (37) INNER_SELECT_C -> L_PARENTIS SELECT ARGS FROM_PARSE R_PARENTIS .
 
@@ -1596,7 +1717,7 @@ state 71
     R_PARENTIS      reduce using rule 37 (INNER_SELECT_C -> L_PARENTIS SELECT ARGS FROM_PARSE R_PARENTIS .)
 
 
-state 72
+state 78
 
     (27) JOIN_C -> JOIN ARGS JOIN_C .
 
@@ -1617,117 +1738,117 @@ state 72
     R_PARENTIS      reduce using rule 27 (JOIN_C -> JOIN ARGS JOIN_C .)
 
 
-state 73
+state 79
 
     (29) JOIN_C -> ON VARIABLE EQUAL . VARIABLE
 
-    VARIABLE        shift and go to state 89
+    VARIABLE        shift and go to state 95
 
 
-state 74
+state 80
 
     (32) CONDITION -> VARIABLE OPERATOR . MATCH
     (33) MATCH -> . QUOTE ANY QUOTE
     (34) MATCH -> . VARIABLE
     (35) MATCH -> . EMPTY_STRING
 
-    QUOTE           shift and go to state 92
-    VARIABLE        shift and go to state 90
-    EMPTY_STRING    shift and go to state 93
+    QUOTE           shift and go to state 98
+    VARIABLE        shift and go to state 96
+    EMPTY_STRING    shift and go to state 99
 
-    MATCH                          shift and go to state 91
-
-state 75
-
-    (49) OPERATOR -> LESS .
-
-    QUOTE           reduce using rule 49 (OPERATOR -> LESS .)
-    VARIABLE        reduce using rule 49 (OPERATOR -> LESS .)
-    EMPTY_STRING    reduce using rule 49 (OPERATOR -> LESS .)
-
-
-state 76
-
-    (50) OPERATOR -> MORE .
-
-    QUOTE           reduce using rule 50 (OPERATOR -> MORE .)
-    VARIABLE        reduce using rule 50 (OPERATOR -> MORE .)
-    EMPTY_STRING    reduce using rule 50 (OPERATOR -> MORE .)
-
-
-state 77
-
-    (51) OPERATOR -> EQUAL .
-
-    QUOTE           reduce using rule 51 (OPERATOR -> EQUAL .)
-    VARIABLE        reduce using rule 51 (OPERATOR -> EQUAL .)
-    EMPTY_STRING    reduce using rule 51 (OPERATOR -> EQUAL .)
-
-
-state 78
-
-    (52) OPERATOR -> NOT_EQUAL .
-
-    QUOTE           reduce using rule 52 (OPERATOR -> NOT_EQUAL .)
-    VARIABLE        reduce using rule 52 (OPERATOR -> NOT_EQUAL .)
-    EMPTY_STRING    reduce using rule 52 (OPERATOR -> NOT_EQUAL .)
-
-
-state 79
-
-    (53) OPERATOR -> MORE_EQ .
-
-    QUOTE           reduce using rule 53 (OPERATOR -> MORE_EQ .)
-    VARIABLE        reduce using rule 53 (OPERATOR -> MORE_EQ .)
-    EMPTY_STRING    reduce using rule 53 (OPERATOR -> MORE_EQ .)
-
-
-state 80
-
-    (54) OPERATOR -> LESS_EQ .
-
-    QUOTE           reduce using rule 54 (OPERATOR -> LESS_EQ .)
-    VARIABLE        reduce using rule 54 (OPERATOR -> LESS_EQ .)
-    EMPTY_STRING    reduce using rule 54 (OPERATOR -> LESS_EQ .)
-
+    MATCH                          shift and go to state 97
 
 state 81
 
-    (55) OPERATOR -> BETWEEN .
+    (52) OPERATOR -> LESS .
 
-    QUOTE           reduce using rule 55 (OPERATOR -> BETWEEN .)
-    VARIABLE        reduce using rule 55 (OPERATOR -> BETWEEN .)
-    EMPTY_STRING    reduce using rule 55 (OPERATOR -> BETWEEN .)
+    QUOTE           reduce using rule 52 (OPERATOR -> LESS .)
+    VARIABLE        reduce using rule 52 (OPERATOR -> LESS .)
+    EMPTY_STRING    reduce using rule 52 (OPERATOR -> LESS .)
 
 
 state 82
 
-    (56) OPERATOR -> LIKE .
+    (53) OPERATOR -> MORE .
 
-    QUOTE           reduce using rule 56 (OPERATOR -> LIKE .)
-    VARIABLE        reduce using rule 56 (OPERATOR -> LIKE .)
-    EMPTY_STRING    reduce using rule 56 (OPERATOR -> LIKE .)
+    QUOTE           reduce using rule 53 (OPERATOR -> MORE .)
+    VARIABLE        reduce using rule 53 (OPERATOR -> MORE .)
+    EMPTY_STRING    reduce using rule 53 (OPERATOR -> MORE .)
 
 
 state 83
 
-    (57) OPERATOR -> IN .
+    (54) OPERATOR -> EQUAL .
 
-    QUOTE           reduce using rule 57 (OPERATOR -> IN .)
-    VARIABLE        reduce using rule 57 (OPERATOR -> IN .)
-    EMPTY_STRING    reduce using rule 57 (OPERATOR -> IN .)
+    QUOTE           reduce using rule 54 (OPERATOR -> EQUAL .)
+    VARIABLE        reduce using rule 54 (OPERATOR -> EQUAL .)
+    EMPTY_STRING    reduce using rule 54 (OPERATOR -> EQUAL .)
 
 
 state 84
 
-    (58) OPERATOR -> REGEX .
+    (55) OPERATOR -> NOT_EQUAL .
 
-    QUOTE           reduce using rule 58 (OPERATOR -> REGEX .)
-    VARIABLE        reduce using rule 58 (OPERATOR -> REGEX .)
-    EMPTY_STRING    reduce using rule 58 (OPERATOR -> REGEX .)
+    QUOTE           reduce using rule 55 (OPERATOR -> NOT_EQUAL .)
+    VARIABLE        reduce using rule 55 (OPERATOR -> NOT_EQUAL .)
+    EMPTY_STRING    reduce using rule 55 (OPERATOR -> NOT_EQUAL .)
 
 
 state 85
+
+    (56) OPERATOR -> MORE_EQ .
+
+    QUOTE           reduce using rule 56 (OPERATOR -> MORE_EQ .)
+    VARIABLE        reduce using rule 56 (OPERATOR -> MORE_EQ .)
+    EMPTY_STRING    reduce using rule 56 (OPERATOR -> MORE_EQ .)
+
+
+state 86
+
+    (57) OPERATOR -> LESS_EQ .
+
+    QUOTE           reduce using rule 57 (OPERATOR -> LESS_EQ .)
+    VARIABLE        reduce using rule 57 (OPERATOR -> LESS_EQ .)
+    EMPTY_STRING    reduce using rule 57 (OPERATOR -> LESS_EQ .)
+
+
+state 87
+
+    (58) OPERATOR -> BETWEEN .
+
+    QUOTE           reduce using rule 58 (OPERATOR -> BETWEEN .)
+    VARIABLE        reduce using rule 58 (OPERATOR -> BETWEEN .)
+    EMPTY_STRING    reduce using rule 58 (OPERATOR -> BETWEEN .)
+
+
+state 88
+
+    (59) OPERATOR -> LIKE .
+
+    QUOTE           reduce using rule 59 (OPERATOR -> LIKE .)
+    VARIABLE        reduce using rule 59 (OPERATOR -> LIKE .)
+    EMPTY_STRING    reduce using rule 59 (OPERATOR -> LIKE .)
+
+
+state 89
+
+    (60) OPERATOR -> IN .
+
+    QUOTE           reduce using rule 60 (OPERATOR -> IN .)
+    VARIABLE        reduce using rule 60 (OPERATOR -> IN .)
+    EMPTY_STRING    reduce using rule 60 (OPERATOR -> IN .)
+
+
+state 90
+
+    (61) OPERATOR -> REGEX .
+
+    QUOTE           reduce using rule 61 (OPERATOR -> REGEX .)
+    VARIABLE        reduce using rule 61 (OPERATOR -> REGEX .)
+    EMPTY_STRING    reduce using rule 61 (OPERATOR -> REGEX .)
+
+
+state 91
 
     (36) GROUP_BY_C -> GROUP BY VARIABLE .
 
@@ -1748,7 +1869,7 @@ state 85
     R_PARENTIS      reduce using rule 36 (GROUP_BY_C -> GROUP BY VARIABLE .)
 
 
-state 86
+state 92
 
     (38) ORDER_BY_C -> ORDER BY VARIABLE .
     (39) ORDER_BY_C -> ORDER BY VARIABLE . DESC
@@ -1769,11 +1890,11 @@ state 86
     OFFSET          reduce using rule 38 (ORDER_BY_C -> ORDER BY VARIABLE .)
     END             reduce using rule 38 (ORDER_BY_C -> ORDER BY VARIABLE .)
     R_PARENTIS      reduce using rule 38 (ORDER_BY_C -> ORDER BY VARIABLE .)
-    DESC            shift and go to state 94
-    ASC             shift and go to state 95
+    DESC            shift and go to state 100
+    ASC             shift and go to state 101
 
 
-state 87
+state 93
 
     (41) ORDER_BY_C -> ORDER BY NEWID_C .
 
@@ -1794,14 +1915,14 @@ state 87
     R_PARENTIS      reduce using rule 41 (ORDER_BY_C -> ORDER BY NEWID_C .)
 
 
-state 88
+state 94
 
-    (59) NEWID_C -> NEWID . L_PARENTIS R_PARENTIS
+    (62) NEWID_C -> NEWID . L_PARENTIS R_PARENTIS
 
-    L_PARENTIS      shift and go to state 96
+    L_PARENTIS      shift and go to state 102
 
 
-state 89
+state 95
 
     (29) JOIN_C -> ON VARIABLE EQUAL VARIABLE .
 
@@ -1822,7 +1943,7 @@ state 89
     R_PARENTIS      reduce using rule 29 (JOIN_C -> ON VARIABLE EQUAL VARIABLE .)
 
 
-state 90
+state 96
 
     (34) MATCH -> VARIABLE .
 
@@ -1843,7 +1964,7 @@ state 90
     R_PARENTIS      reduce using rule 34 (MATCH -> VARIABLE .)
 
 
-state 91
+state 97
 
     (32) CONDITION -> VARIABLE OPERATOR MATCH .
 
@@ -1864,14 +1985,14 @@ state 91
     R_PARENTIS      reduce using rule 32 (CONDITION -> VARIABLE OPERATOR MATCH .)
 
 
-state 92
+state 98
 
     (33) MATCH -> QUOTE . ANY QUOTE
 
-    ANY             shift and go to state 97
+    ANY             shift and go to state 103
 
 
-state 93
+state 99
 
     (35) MATCH -> EMPTY_STRING .
 
@@ -1892,7 +2013,7 @@ state 93
     R_PARENTIS      reduce using rule 35 (MATCH -> EMPTY_STRING .)
 
 
-state 94
+state 100
 
     (39) ORDER_BY_C -> ORDER BY VARIABLE DESC .
 
@@ -1913,7 +2034,7 @@ state 94
     R_PARENTIS      reduce using rule 39 (ORDER_BY_C -> ORDER BY VARIABLE DESC .)
 
 
-state 95
+state 101
 
     (40) ORDER_BY_C -> ORDER BY VARIABLE ASC .
 
@@ -1934,42 +2055,42 @@ state 95
     R_PARENTIS      reduce using rule 40 (ORDER_BY_C -> ORDER BY VARIABLE ASC .)
 
 
-state 96
+state 102
 
-    (59) NEWID_C -> NEWID L_PARENTIS . R_PARENTIS
+    (62) NEWID_C -> NEWID L_PARENTIS . R_PARENTIS
 
-    R_PARENTIS      shift and go to state 98
+    R_PARENTIS      shift and go to state 104
 
 
-state 97
+state 103
 
     (33) MATCH -> QUOTE ANY . QUOTE
 
-    QUOTE           shift and go to state 99
+    QUOTE           shift and go to state 105
 
 
-state 98
+state 104
 
-    (59) NEWID_C -> NEWID L_PARENTIS R_PARENTIS .
+    (62) NEWID_C -> NEWID L_PARENTIS R_PARENTIS .
 
-    INNER           reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    LEFT            reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    RIGHT           reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    FULL            reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    OUTER           reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    JOIN            reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    ON              reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    WHERE           reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    GROUP           reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    HAVING          reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    ORDER           reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    LIMIT           reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    OFFSET          reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    END             reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
-    R_PARENTIS      reduce using rule 59 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    INNER           reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    LEFT            reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    RIGHT           reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    FULL            reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    OUTER           reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    JOIN            reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    ON              reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    WHERE           reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    GROUP           reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    HAVING          reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    ORDER           reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    LIMIT           reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    OFFSET          reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    END             reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
+    R_PARENTIS      reduce using rule 62 (NEWID_C -> NEWID L_PARENTIS R_PARENTIS .)
 
 
-state 99
+state 105
 
     (33) MATCH -> QUOTE ANY QUOTE .
 
