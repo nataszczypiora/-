@@ -30,9 +30,9 @@ SELECT * FROM TABLE cat FULL JOIN owner ON owner.cat = cat.id WHERE owner NOT NU
 def search_full_join_antipattern(tokens):
     is_full_join = False
     for i in range(0, len(tokens) - 1):
-        if tokens[i] == 'FULL' and tokens[i+1] == 'JOIN':
+        if tokens[i] == 'JOIN':
             is_full_join = True
-        if tokens[i:i+3] == ['VARIABLE', 'EQUAL', 'VARIABLE'] and is_full_join:
+        if tokens[i:i+2] == ['NOT_EQUAL', 'NULL'] and is_full_join:
             return True
 
 
